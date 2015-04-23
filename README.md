@@ -1,6 +1,5 @@
 # jplugin
-<<<<<<< HEAD
+jplugin
 
 common util plugin
-=======
->>>>>>> origin/master
+
