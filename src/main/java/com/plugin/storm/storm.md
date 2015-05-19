@@ -1,0 +1,13 @@
+1.Storm 在taobao的使用情况
+淘宝使用storm和消息队列结合，每天能够处理2百万到15亿条日志，日志量达到2TB的近实时处理。
+
+2.使用场景
+a)通过配置drpc服务器，将storm的topology发布为drpc服务。客户端程序可以调用drpc服务将数据发送到storm集群中，并接收处理结果的反馈。
+这种方式需要drpc服务器进行转发，其中drpc服务器底层通过thrift实现。适合的业务场景主要是实时计算。并且扩展性良好，可以增加每个节点的工作worker数量来动态扩展。
+b)第二种场景是通过beanstalkd来实现信息的导入，将topology任务提交到storm集群后可以通过开发beanstalkd客户端来向集群中发送信息，这种方式客户端收不到结果反馈。
+这个场景适合纯粹的数据分析处理的业务场景。
+
+
+
+【topology】
+topology是storm集群上面运行的基本单元，而一个topology又可以有若干个sport和bolt以某种策略组合而成.
