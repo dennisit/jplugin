@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="ExModelDao">
+
+    <typeAlias alias="ExModel" type="com.plugin.model.ExModel"/>
+
+    <resultMap id="ExModelResultMap" class="ExModel">
+        <result property="id" column="id" nullValue="0"/>
+        <result property="name" column="name"/>
+        <result property="type" column="type" nullValue="0"/>
+        <result property="created" column="created"/>
+    </resultMap>
+
+    <insert id="insert" parameterClass="Example">
+        insert into tb_example (name, type, created)
+        values  (#name#, #type#, #created#)
+    </insert>
+
+
+    <sql id="condition">
+        <dynamic prepend="where">
+            <isNotEmpty prepend="and" property="value" >
+                name like #value#
+            </isNotEmpty>
+        </dynamic>
+    </sql>
+
+    <select id="selectCount" resultClass="int">
+        select count(*) as value from tb_example <include refid="ExModelDao.condition"/>
+    </select>
+
+
+</sqlMap>

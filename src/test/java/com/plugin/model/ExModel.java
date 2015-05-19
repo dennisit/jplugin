@@ -16,17 +16,52 @@
 // without specific prior written permission.
 // Author: dennisit@163.com | dobby | 苏若年
 //--------------------------------------------------------------------------
-package com.plugin;
+package com.plugin.model;
+
+import java.util.Date;
 
 /**
- * Description:
+ * description:
+ *
  * @author dennisit@163.com
- * @version 1.0.1
+ * @version 1.0
  */
-public interface Version {
+public class ExModel {
 
-    public static final String version = "1.0";
+    private int id;
+    private String name;
+    private int type;
+    private Date created;
 
-    public static final String author = "dennisit";
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
 }
