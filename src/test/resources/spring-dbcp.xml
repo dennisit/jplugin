@@ -46,19 +46,15 @@
 		<property name="password" value="${mysql.jdbc.password}"/>
 	</bean>
 
-	
-	<bean id="readWriteDataSources" class="java.util.HashMap">
-		<constructor-arg>
+
+	<bean id="mysqlWriteReadDataSource" class="com.plugin.ibatis.datasource.RoutingDataSource">
+		<property name="defaultTargetDataSource" ref="dataSourceWrite" />
+		<property name="targetDataSources">
 			<map>
 				<entry key="WRITE"  value-ref="dataSourceWrite" />
 				<entry key="READ" value-ref="dataSourceRead" />
 			</map>
-		</constructor-arg>
-	</bean>
-
-	<bean id="mysqlWriteReadDataSource" class="com.plugin.ibatis.datasource.RoutingDataSource">
-		<property name="defaultTargetDataSource" ref="dataSourceWrite" />
-		<property name="targetDataSources" ref="readWriteDataSources" />
+		</property>
 		<property name="readDataSourceKeys">
 			<list>
 				<value>READ</value>
