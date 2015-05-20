@@ -16,9 +16,7 @@
 // without specific prior written permission.
 // Author: dennisit@163.com | dobby | 苏若年
 //--------------------------------------------------------------------------
-package com.plugin.util;
-
-import java.util.Properties;
+package com.plugin.hash.mode;
 
 /**
  * description:
@@ -26,25 +24,15 @@ import java.util.Properties;
  * @author dennisit@163.com
  * @version 1.0
  */
-public class ProperUtil {
+public enum ModHash {
 
-    public static final String DEFAULT = "system";
+    HASHCODE_MOD;
 
-    private static Properties p = null;
-
-    public static String getValue(String key) {
-        return getValue( key, ProperUtil.DEFAULT );
+    public int hashKey(String key, int size) {
+        return Math.abs(key.hashCode() % size);
     }
 
-    public static String getValue(String key, String propertiesName) {
-        if (p == null || p.size() == 0) {
-            p = new Properties();
-            try {
-                p.load(ProperUtil.class.getResourceAsStream("/" + propertiesName + ".properties"));
-            } catch (Exception ex) {
-                System.out.println(ex.getMessage());
-            }
-        }
-        return String.valueOf(p.getProperty(key, ""));
+    public static void main(String[] args){
+        System.out.println(HASHCODE_MOD.hashKey(null,3));
     }
 }

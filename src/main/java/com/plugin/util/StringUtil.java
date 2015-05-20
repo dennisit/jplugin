@@ -18,6 +18,10 @@
 //--------------------------------------------------------------------------
 package com.plugin.util;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+
 /**
  * description:
  *
@@ -58,6 +62,22 @@ public class StringUtil {
         return des;
     }
 
+    /**
+     * 通过url向某台机器发起一个请求，然后获得该url请求的内容
+     * @param urlStr
+     *            请求的url地址
+     * @return 返回该地址请求的字符串
+     */
+    public String getUrlContent(String urlStr) throws Exception {
+        StringBuffer frontText = new StringBuffer();
+        URL url = new URL(urlStr);
+        BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+        String str = null;
+        while ((str = in.readLine()) != null) {
+            frontText.append(str);
+        }
+        return frontText.toString();
+    }
 
 
 }

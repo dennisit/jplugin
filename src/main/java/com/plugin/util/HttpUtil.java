@@ -19,7 +19,9 @@
 package com.plugin.util;
 
 
-import java.io.IOException;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 
 import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
@@ -32,6 +34,9 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.NameValuePair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * description:
  *
@@ -39,6 +44,9 @@ import org.apache.commons.httpclient.NameValuePair;
  * @version 1.0
  */
 public class HttpUtil {
+
+    private static Logger LOG = LoggerFactory.getLogger(HttpUtil.class);
+
 
     public static String getUrlBody(String urlString) {
         String responseStr = "";
@@ -123,5 +131,93 @@ public class HttpUtil {
         }
         postMethod.releaseConnection();
         return responseStr;
+    }
+
+    public static String executeHttpRequestString(String url, int timeout) {
+        HttpClient client = new HttpClient();
+        GetMethod getMethod = new GetMethod(url);
+        try {
+            getMethod.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler());
+            getMethod.getParams().setParameter(HttpMethodParams.HTTP_CONTENT_CHARSET, "GBK");
+            getMethod.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, timeout);
+            int statusCode = client.executeMethod(getMethod);
+            if (statusCode != HttpStatus.SC_OK) {
+                return "";
+            }
+            String responseBody = getMethod.getResponseBodyAsString();
+            return responseBody;
+        } catch (Exception e) {
+            LOG.error("----------- executeHttpRequestString Error. -----------", e);
+        } finally {
+            getMethod.releaseConnection();
+        }
+        return null;
+    }
+
+    public static void postData(Reader data, Writer output, URL targetUrl, String POST_ENCODING) throws Exception {
+        HttpURLConnection urlc = null;
+        IOException e;
+        OutputStream out;
+        urlc = (HttpURLConnection)targetUrl.openConnection();
+        try{
+            //GET POST HEAD OPTIONS PUT DELETE TRACE
+            urlc.setRequestMethod("POST");
+        }
+        catch(IOException ee){
+            throw new Exception("Shouldn't happen: HttpURLConnection doesn't support POST!!", ee);
+        }
+        urlc.setDoOutput(true);
+        urlc.setDoInput(true);
+        //不用缓存，true使用任何可以的缓存
+        urlc.setUseCaches(false);
+        urlc.setAllowUserInteraction(false);
+        urlc.setRequestProperty("Content-type", (new StringBuilder()).append("text/xml; charset=").append(POST_ENCODING).toString());
+        out = urlc.getOutputStream();
+        try{
+            Writer writer = new OutputStreamWriter(out, POST_ENCODING);
+            pipe(data, writer);
+            writer.close();
+        }catch(IOException ee)
+        {
+            throw new Exception("IOException while posting data", ee);
+        }
+        if(out != null){
+            try{
+                out.close();
+            }catch(Exception ee){}
+        }
+        InputStream in = urlc.getInputStream();
+        try{
+            Reader reader = new InputStreamReader(in);
+            pipe(reader, output);
+            reader.close();
+        }catch(IOException ee){
+            throw new Exception("IOException while reading response", ee);
+        }
+        if(in != null)
+            try{
+                in.close();
+            }catch(Exception ee){}
+        if(urlc != null){
+            try{
+                urlc.disconnect();
+            }catch(Exception ee){
+                throw new Exception((new StringBuilder())
+                        .append("Connection error (is server running at ")
+                        .append(targetUrl).append(" ?): ")
+                        .append(out).toString());
+            }
+        }
+    }
+
+
+    private static void pipe(Reader reader, Writer writer) throws IOException {
+        char buf[] = new char[1024];
+        StringBuffer sb = new StringBuffer();
+        for (int read = 0; (read = reader.read(buf)) >= 0;){
+            writer.write(buf, 0, read);
+            sb.append(String.valueOf(buf).trim());
+        }
+        writer.flush();
     }
 }
