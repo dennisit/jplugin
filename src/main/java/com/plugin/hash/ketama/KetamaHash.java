@@ -16,7 +16,7 @@
 // without specific prior written permission.
 // Author: dennisit@163.com | dobby | 苏若年
 //--------------------------------------------------------------------------
-package com.plugin.hash.mode;
+package com.plugin.hash.ketama;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -28,11 +28,9 @@ import java.security.NoSuchAlgorithmException;
  * @author dennisit@163.com
  * @version 1.0
  */
-public enum KetamaHash {
+public class KetamaHash {
 
-    KETAMA_HASH;
-
-    public long hash(byte[] digest, int nTime) {
+    private static long hash(byte[] digest, int nTime) {
         long rv = ((long) (digest[3+nTime*4] & 0xFF) << 24)
                 | ((long) (digest[2+nTime*4] & 0xFF) << 16)
                 | ((long) (digest[1+nTime*4] & 0xFF) << 8)
@@ -44,7 +42,7 @@ public enum KetamaHash {
     /**
      * Get the md5 of the given key.
      */
-    public byte[] computeMd5(String k) {
+    private static byte[] computeMd5(String k) {
         MessageDigest md5;
         try {
             md5 = MessageDigest.getInstance("MD5");
@@ -65,11 +63,12 @@ public enum KetamaHash {
     /**
      * Get the hash of the given key.
      */
-    public long computeHash(String k){
-        return hash(computeMd5(k),0);
+    public static long hashKey(String key){
+        return hash(computeMd5(key), 0);
     }
 
-    public static void main(String[] args) {
-        System.out.println(KETAMA_HASH.computeHash("zhandgsandfte"));
+    public static long hashKey(String key, int size){
+        return hash(computeMd5(key),size);
     }
+
 }
