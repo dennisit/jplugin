@@ -20,7 +20,6 @@ package com.plugin.hash.mod;
 
 /**
  * description:
- *
  * @author dennisit@163.com
  * @version 1.0
  */

@@ -1,22 +1,27 @@
-/*
- * Copyright (c) 2015, www.jd.com. All rights reserved.
- *
- * 警告：本计算机程序受著作权法和国际公约的保护，未经授权擅自复制或散布本程序的部分或全部、以及其他
- * 任何侵害著作权人权益的行为，将承受严厉的民事和刑事处罚，对已知的违反者将给予法律范围内的全面制裁。
- *
- */
+//--------------------------------------------------------------------------
+// Copyright (c) 2010-2020, En.dennisit or Cn.苏若年
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are
+// met:
+//
+// Redistributions of source code must retain the above copyright notice,
+// this list of conditions and the following disclaimer.
+// Redistributions in binary form must reproduce the above copyright
+// notice, this list of conditions and the following disclaimer in the
+// documentation and/or other materials provided with the distribution.
+// Neither the name of the dennisit nor the names of its contributors
+// may be used to endorse or promote products derived from this software
+// without specific prior written permission.
+// Author: dennisit@163.com | dobby | 苏若年
+//--------------------------------------------------------------------------
 package com.plugin.hash;
 
 /**
  * Description:
- *
- * @author pudongping
- * @version 1.0.1
- */
-/*
- * =========================== 维护日志 ===========================
- * 2015-04-16 17:49  pudongping 新建代码 
- * =========================== 维护日志 ===========================
+ * @author dennisit@163.com
+ * @version 1.0
  */
 public abstract class ShardingInfo<T> {
 
