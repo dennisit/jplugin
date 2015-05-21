@@ -18,7 +18,6 @@
 //--------------------------------------------------------------------------
 package com.plugin.ibatis.datasource;
 
-import com.ibatis.common.util.PaginatedList;
 import com.ibatis.sqlmap.client.SqlMapClient;
 import com.ibatis.sqlmap.client.event.RowHandler;
 import org.slf4j.Logger;

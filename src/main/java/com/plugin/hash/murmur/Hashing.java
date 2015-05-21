@@ -23,7 +23,6 @@ import java.security.NoSuchAlgorithmException;
 
 /**
  * description:
- *
  * @author dennisit@163.com
  * @version 1.0
  */
@@ -34,9 +33,11 @@ public interface Hashing {
     public ThreadLocal<MessageDigest> md5Holder = new ThreadLocal<MessageDigest>();
 
     public static final Hashing MD5 = new Hashing() {
+
         public long hash(String key) {
             return hash(SafeEncoder.encode(key));
         }
+
         public long hash(byte[] key) {
             try {
                 if (md5Holder.get() == null) {
